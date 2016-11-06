@@ -4,12 +4,16 @@ package th.co.dtac
 import net.sf.jasperreports.engine.*
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource
 import net.sf.jasperreports.view.JasperViewer
+import org.apache.commons.io.FileUtils
 import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.context.annotation.Bean
 import th.co.dtac.model.Country
+import java.io.File
+import java.io.FileOutputStream
 import java.nio.charset.Charset
+import java.util.*
 
 
 @SpringBootApplication
@@ -38,7 +42,15 @@ open class DemoJasperApplication{
             val beanColDataSource = JRBeanCollectionDataSource(dataList)
             val jasperReport = JasperCompileManager.compileReportToFile(jrxmlfile)
             val parameters : MutableMap<String,Any> = mutableMapOf()
-            JasperFillManager.fillReportToFile(jasperReport, parameters,beanColDataSource)
+            val jasperPrint = JasperFillManager.fillReportToFile(jasperReport, parameters,beanColDataSource)
+
+            val initialFile = File(jasperPrint)
+            val inputStream = FileUtils.openInputStream(initialFile)
+
+            val pdf = File.createTempFile("/home/araya/Workspace/demo-jasper/src/main/kotlin/jasperreport/output.", ".pdf")
+            val outputStream = FileUtils.openOutputStream(pdf)
+            JasperExportManager.exportReportToPdfStream(inputStream, outputStream)
+
         }catch (ex: JRException){
             ex.printStackTrace()
         }

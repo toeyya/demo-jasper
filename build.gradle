@@ -47,36 +47,22 @@ dependencies {
 	compile 'org.codehaus.groovy:groovy-all:2.3.6'
 	jasperreports 'net.sf.jasperreports:jasperreports:6.2.0',
 			'org.codehaus.groovy:groovy-all:2.3.6'
+
+    compile group: 'commons-io', name: 'commons-io', version: '2.5'
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
 
-//sourceSets {
-//	jasper {
-//		srcDir = file(relativePath('src/main/resources/reports'))
-//		classesDir = srcDir
-//	}
-//}
-
 gradle.projectsEvaluated {
 	processResources.dependsOn(compileJasperReports)
-	//classes.dependsOn compileJasperReports
-
 }
 task compileJasperReports {
 	def jasperSourceDir = file('src/main/jasperreports')
 	ant {
-//		java(classname: 'net.sf.jasperreports.view.JasperDesignViewer',fork:true,classpath: configurations.jasperreports.asPath){
-//			classpath(path: sourceSets.main.output.classesDir)
-//			arg(value: '**/*.jasper')
-//		}
 		taskdef(name: 'jrc', classname: 'net.sf.jasperreports.ant.JRAntCompileTask', classpath: configurations.jasperreports.asPath)
 		sourceSets.main.output.classesDir.mkdirs()
 		jrc(srcdir: jasperSourceDir, destdir: sourceSets.main.output.classesDir) {
 			classpath(path: sourceSets.main.output.classesDir)
 			include(name: '**/*.jrxml')
 		}
-
-
-
 	}
 }
