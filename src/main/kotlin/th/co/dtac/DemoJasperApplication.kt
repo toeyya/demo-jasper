@@ -18,21 +18,15 @@ open class DemoJasperApplication{
     @Bean
     open fun init() = CommandLineRunner {
 
-        var string = "abc\u0E40\u0E15\u0E49\u0E22จ่ะ"
-        val utf8 = string.toByteArray(charset("UTF-8"))
-        string = kotlin.text.String(utf8, Charset.forName("UTF-8"))
-        println(string)
-
-
         val jrxmlfile : String= "/home/araya/Workspace/demo-jasper/src/main/kotlin/jasperreport/jasper_report_template.jrxml"
         val data = Country()
-        data.name = string
+        data.name = "กุมภาพันธ์"
         data.country = "Thailand"
         val data1 = Country()
-        data1.name = "\u0E40\u0E15\u0E49\u0E22"
+        data1.name = "อารญา"
         data1.country = "English"
         val data2 = Country()
-        data2.name = "Araya"
+        data2.name = "ดีแทค"
         data2.country = "France"
 
         val dataList : MutableList<Country> = mutableListOf()
