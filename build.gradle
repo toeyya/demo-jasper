@@ -31,6 +31,7 @@ repositories {
 	maven { url 'http://jasperreports.sourceforge.net/maven2' }
 
 }
+configurations.create('jasperreports')
 configurations {
 	jasperreports {
 		transitive = true
@@ -49,17 +50,33 @@ dependencies {
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
 
+//sourceSets {
+//	jasper {
+//		srcDir = file(relativePath('src/main/resources/reports'))
+//		classesDir = srcDir
+//	}
+//}
+
 gradle.projectsEvaluated {
 	processResources.dependsOn(compileJasperReports)
+	//classes.dependsOn compileJasperReports
+
 }
 task compileJasperReports {
 	def jasperSourceDir = file('src/main/jasperreports')
 	ant {
+//		java(classname: 'net.sf.jasperreports.view.JasperDesignViewer',fork:true,classpath: configurations.jasperreports.asPath){
+//			classpath(path: sourceSets.main.output.classesDir)
+//			arg(value: '**/*.jasper')
+//		}
 		taskdef(name: 'jrc', classname: 'net.sf.jasperreports.ant.JRAntCompileTask', classpath: configurations.jasperreports.asPath)
 		sourceSets.main.output.classesDir.mkdirs()
 		jrc(srcdir: jasperSourceDir, destdir: sourceSets.main.output.classesDir) {
 			classpath(path: sourceSets.main.output.classesDir)
 			include(name: '**/*.jrxml')
 		}
+
+
+
 	}
 }
