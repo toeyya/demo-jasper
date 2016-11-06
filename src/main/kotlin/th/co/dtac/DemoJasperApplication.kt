@@ -18,7 +18,7 @@ open class DemoJasperApplication{
     @Bean
     open fun init() = CommandLineRunner {
 
-        var string = "abc\u0E40\u0E15\u0E49\u0E22"
+        var string = "abc\u0E40\u0E15\u0E49\u0E22จ่ะ"
         val utf8 = string.toByteArray(charset("UTF-8"))
         string = kotlin.text.String(utf8, Charset.forName("UTF-8"))
         println(string)
@@ -26,7 +26,7 @@ open class DemoJasperApplication{
 
         val jrxmlfile : String= "/home/araya/Workspace/demo-jasper/src/main/kotlin/jasperreport/jasper_report_template.jrxml"
         val data = Country()
-        data.name = "\u0E2D\u0E32\u0E23\u0E0D\u0E32"
+        data.name = string
         data.country = "Thailand"
         val data1 = Country()
         data1.name = "\u0E40\u0E15\u0E49\u0E22"
